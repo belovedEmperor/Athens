@@ -31,6 +31,7 @@ passport.use(
       try {
         const user = await prisma.user.findUnique({
           where: { email: email.toLowerCase() },
+          include: { userProfile: true },
         });
 
         if (!user) {
@@ -58,6 +59,7 @@ passport.deserializeUser(async (id, done) => {
       null,
       await prisma.user.findUnique({
         where: { id },
+        include: { userProfile: true },
       }),
     );
   } catch (err) {
