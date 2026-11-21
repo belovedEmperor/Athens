@@ -8,11 +8,7 @@ import {
   updateRules,
 } from "../validators/authValidators.js";
 import { validate } from "../validators/index.js";
-
-const conflict = (res, field) =>
-  res.status(409).json({
-    errors: [{ msg: `${field} already in use.`, path: field }],
-  });
+import { conflict } from "../lib/responses.js";
 
 export const register = [
   ...validate(registerRules()),

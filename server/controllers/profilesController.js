@@ -3,11 +3,7 @@ import { prisma } from "../lib/prisma.js";
 import { idRules } from "../validators/commonValidators.js";
 import { validate } from "../validators/index.js";
 import { updateRules } from "../validators/profileValidators.js";
-
-const conflict = (res, field) =>
-  res.status(409).json({
-    errors: [{ msg: `${field} already in use.`, path: field }],
-  });
+import { conflict } from "../lib/responses.js";
 
 export const get = [
   ...validate(idRules()),
