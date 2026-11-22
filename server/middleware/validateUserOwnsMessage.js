@@ -8,11 +8,10 @@ export default [
   async (req, res, next) => {
     try {
       const { id } = matchedData(req);
-      const profile = await prisma.userProfile.findUnique({
-        where: { id: Number(id) },
+      const message = await prisma.message.findUnique({
+        where: { id },
       });
-      if (!profile) return res.sendStatus(404);
-      return req.user.id === profile.userId ? next() : res.sendStatus(401);
+      return message.userId !== req.user.id ? res.sendStatus(403) : next();
     } catch (err) {
       console.error(err);
       next(err);

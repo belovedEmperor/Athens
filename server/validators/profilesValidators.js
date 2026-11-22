@@ -1,18 +1,18 @@
 import { body, query } from "express-validator";
 import { prisma } from "../lib/prisma.js";
-import { idRules } from "./commonValidators.js";
+import { idRules, numberMessage } from "./commonValidators.js";
 
 export const searchRules = () => [
   query("limit")
     .optional()
     .trim()
     .isNumeric()
-    .withMessage(`Limit ${numberErr}`),
+    .withMessage(`Limit ${numberMessage}`),
   query("offset")
     .optional()
     .trim()
     .isNumeric()
-    .withMessage(`Limit ${numberErr}`),
+    .withMessage(`Limit ${numberMessage}`),
 ];
 
 export const updateRules = () => [

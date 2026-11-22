@@ -7,4 +7,6 @@ const connectionString = `${process.env.DATABASE_URL}`;
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
-export { prisma };
+const objIsEmpty = (obj) => Object.keys(obj).length === 0;
+
+export { prisma, objIsEmpty };

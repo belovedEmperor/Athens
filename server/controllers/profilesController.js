@@ -2,7 +2,7 @@ import { matchedData } from "express-validator";
 import { prisma } from "../lib/prisma.js";
 import { idRules } from "../validators/commonValidators.js";
 import { validate } from "../validators/index.js";
-import { updateRules } from "../validators/profileValidators.js";
+import { updateRules } from "../validators/profilesValidators.js";
 import { conflict } from "../lib/responses.js";
 
 export const get = [
