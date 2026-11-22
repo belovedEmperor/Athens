@@ -35,12 +35,16 @@ passport.use(
         });
 
         if (!user) {
-          return done(null, false, { message: "Incorrect email or password." });
+          return done(null, false, {
+            errors: [{ status: 401, msg: "Incorrect email or password." }],
+          });
         }
 
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-          return done(null, false, { message: "Incorrect email or password." });
+          return done(null, false, {
+            errors: [{ status: 401, msg: "Incorrect email or password." }],
+          });
         }
 
         return done(null, user);
