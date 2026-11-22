@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { prisma } from "../lib/prisma.js";
+import { objIsEmpty, prisma, updatedNothing } from "../lib/prisma.js";
 import passport from "passport";
 import { matchedData } from "express-validator";
 import {
@@ -8,7 +8,7 @@ import {
   updateRules,
 } from "../validators/authValidators.js";
 import { validate } from "../validators/index.js";
-import { conflict, sendError } from "../lib/responses.js";
+import { conflict, sendBodyError, sendError } from "../lib/responses.js";
 
 export const register = [
   ...validate(registerRules()),
@@ -93,20 +93,30 @@ export const update = [
   async (req, res, next) => {
     try {
       const { email, password } = matchedData(req);
+
+      const where = { id: req.user.id };
       const data = {};
-      if (email) data.email = email;
-      if (password)
-        data.password = await bcrypt.hash(
+      if (email) {
+        where.email = { not: email };
+        data.email = email;
+      }
+      if (password) {
+        const hashedPassword = await bcrypt.hash(
           password,
           Number(process.env.SALT_LENGTH),
         );
+        where.password = { not: hashedPassword };
+        data.password = hashedPassword;
+      }
 
-      const user = await prisma.user.update({
-        where: { id: req.user.id },
+      if (objIsEmpty(data))
+        return sendBodyError(res, { msg: "Received no data." });
+      const user = await prisma.user.updateManyAndReturn({
+        where,
         data,
         omit: { password: true },
       });
-      res.json(user);
+      res.json(user[0]);
     } catch (err) {
       if (err.code === "P2002")
         return conflict(res, err.meta?.target?.[0] ?? "email");

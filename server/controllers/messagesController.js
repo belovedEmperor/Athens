@@ -3,6 +3,7 @@ import { objIsEmpty, prisma } from "../lib/prisma.js";
 import { idRules } from "../validators/commonValidators.js";
 import { validate } from "../validators/index.js";
 import { createRules, updateRules } from "../validators/messagesValidators.js";
+import { sendBodyError } from "../lib/responses.js";
 
 export const get = [
   ...validate(idRules()),
@@ -57,20 +58,12 @@ export const update = [
         data.text = text;
       }
 
-      if (objIsEmpty(data))
-        return res.status(400).json({
-          errors: [
-            {
-              type: "field",
-              location: "body",
-              path: "body",
-              status: 400,
-              msg: "Text must not be empty.",
-            },
-          ],
-        });
-      const message = await prisma.message.updateMany({ where, data });
-      res.json(message);
+      if (objIsEmpty(data)) return sendBodyError({ msg: "Received no data." });
+      const message = await prisma.message.updateManyAndReturn({
+        where,
+        data,
+      });
+      res.json(message[0]);
     } catch (err) {
       next(err);
     }

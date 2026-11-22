@@ -84,15 +84,13 @@ export const update = [
       }
 
       if (objIsEmpty(data))
-        return sendBodyError(res, {
-          msg: "Name or members must not be empty.",
-        });
-      const chat = await prisma.chat.updateMany({
+        return sendBodyError(res, { msg: "Received no data." });
+      const chat = await prisma.chat.updateManyAndReturn({
         where,
         data,
         include: { members: true, messages: true },
       });
-      res.json(chat);
+      res.json(chat[0]);
     } catch (err) {
       next(err);
     }

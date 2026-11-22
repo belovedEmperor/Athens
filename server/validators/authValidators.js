@@ -89,5 +89,12 @@ export const updateRules = () => [
       minNumbers: 1,
       minSymbols: 1,
     })
-    .withMessage(passwordMessage),
+    .withMessage(passwordMessage)
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage("Password confirmation must match password."),
+  body("confirmPassword")
+    .optional({ checkFalsy: true })
+    .trim()
+    .custom((value, { req }) => value === req.body.confirmPassword.trim())
+    .withMessage("Password confirmation must match password."),
 ];

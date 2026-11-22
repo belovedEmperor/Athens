@@ -8,5 +8,9 @@ export const sendError = (res, { status = 400, type, location, path, msg }) =>
 
 export const sendBodyError = (res, { status = 400, msg }) =>
   sendError(res, {
-    errors: [{ type: "field", path: "body", location: "body", status, msg }],
+    type: "field",
+    path: "body",
+    location: "body",
+    status,
+    msg,
   });
