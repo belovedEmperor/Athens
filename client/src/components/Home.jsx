@@ -5,15 +5,11 @@ export default function Home() {
 
   return (
     <div>
-      <img
-        src="/images/11.jpg"
-        alt="A house in the woods with a shed on the side"
-      />
       {!user ? (
-        <p>
-          Looks like you're not logged in! You must be logged in to compete for
-          a score.
-        </p>
+        <>
+          <p>Looks like you're not logged in!</p>
+          <a href="/auth/login">Login</a>
+        </>
       ) : (
         <a href="/levels">Level Selector</a>
       )}

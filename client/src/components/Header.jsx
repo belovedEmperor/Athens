@@ -18,6 +18,7 @@ export default function Header({ user, setUser }) {
         {user ? (
           <form onSubmit={handleSubmit}>
             <label>
+              <a href="/settings">Settings</a>
               <button type="submit">Logout</button>
             </label>
           </form>

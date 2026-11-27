@@ -3,6 +3,7 @@ import RegisterForm from "./components/RegisterForm";
 import LoginForm from "./components/LoginForm";
 import Home from "./components/Home";
 import ErrorPage from "./components/ErrorPage";
+import Settings from "./components/Settings";
 
 const routes = [
   {
@@ -10,7 +11,10 @@ const routes = [
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
+      {
+        index: true,
+        element: <Home />,
+      },
       {
         path: "auth",
         children: [
@@ -23,6 +27,10 @@ const routes = [
             element: <LoginForm />,
           },
         ],
+      },
+      {
+        path: "settings",
+        element: <Settings />,
       },
     ],
   },

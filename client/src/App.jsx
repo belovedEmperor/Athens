@@ -12,8 +12,6 @@ function App() {
       .catch(() => setUser(null));
   }, []);
 
-  console.log(user);
-
   return (
     <>
       <Header user={user} setUser={setUser} />
