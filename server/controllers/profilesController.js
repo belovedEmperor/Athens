@@ -3,14 +3,18 @@ import { prisma } from "../lib/prisma.js";
 import { idRules } from "../validators/commonValidators.js";
 import { validate } from "../validators/index.js";
 import { updateRules } from "../validators/profilesValidators.js";
-import { conflict } from "../lib/responses.js";
+import { conflict, sendError } from "../lib/responses.js";
 
 export const get = [
   ...validate(idRules()),
   async (req, res, next) => {
     try {
       const { id } = matchedData(req);
-      const user = await prisma.userProfile.findUnique({ where: { id } });
+      const user = await prisma.userProfile.findUnique({
+        where: { id: Number(id) },
+      });
+      if (!user)
+        return sendError(res, { status: 404, msg: "Profile not found." });
       res.json(user);
     } catch (err) {
       next(err);
